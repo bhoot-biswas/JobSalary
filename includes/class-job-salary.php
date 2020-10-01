@@ -65,10 +65,11 @@ final class Job_Salary {
 	 */
 	private  function init() {
 		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_field' ) );
+		add_filter( 'job_manager_job_listing_data_fields', array( $this, 'admin_add_salary_field' ) );
 	}
 
 	/**
-	 * Add salary field.
+	 * Add frontend salary field.
 	 * @param [type] $fields [description]
 	 */
 	public function frontend_add_salary_field( $fields ) {
@@ -78,6 +79,20 @@ final class Job_Salary {
 			'required'    => true,
 			'placeholder' => 'e.g. 20000',
 			'priority'    => 7,
+		);
+		return $fields;
+	}
+
+	/**
+	 * Add admin salary field.
+	 * @param [type] $fields [description]
+	 */
+	public function admin_add_salary_field( $fields ) {
+		$fields['_job_salary'] = array(
+			'label'       => __( 'Salary ($)', 'job-salary' ),
+			'type'        => 'text',
+			'placeholder' => 'e.g. 20000',
+			'description' => '',
 		);
 		return $fields;
 	}
