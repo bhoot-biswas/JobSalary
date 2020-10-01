@@ -70,6 +70,8 @@ final class Job_Salary {
 		add_filter( 'wpjm_get_job_listing_structured_data', array( $this, 'add_basesalary_data' ) );
 		add_action( 'job_manager_job_filters_search_jobs_end', array( $this, 'filter_by_salary_field' ) );
 		add_filter( 'job_manager_get_listings', array( $this, 'filter_by_salary_field_query_args' ), 10, 2 );
+		add_filter( 'manage_edit-job_listing_columns', array( $this, 'retrieve_salary_column' ) );
+		add_filter( 'manage_job_listing_posts_custom_column', array( $this, 'display_salary_column' ) );
 	}
 
 	/**
@@ -197,6 +199,39 @@ final class Job_Salary {
 			}
 		}
 		return $query_args;
+	}
+
+	/**
+	 * Sets the job_salary metadata as a new $column that can be used in the back-end.
+	 * @param  [type] $columns [description]
+	 * @return [type]          [description]
+	 */
+	public function retrieve_salary_column( $columns ) {
+		$columns['job_salary'] = __( 'Salary', 'job-salary' );
+		return $columns;
+	}
+
+	/**
+	 * Display salary column in the back-end.
+	 * @param  [type] $column [description]
+	 * @return [type]         [description]
+	 */
+	public function display_salary_column( $column ) {
+		global $post;
+
+		switch ( $column ) {
+			case 'job_salary':
+				$salary = get_post_meta( $post->ID, '_job_salary', true );
+
+				if ( ! empty( $salary ) ) {
+					echo $salary;
+				} else {
+					echo '-';
+				}
+				break;
+		}
+
+		return $column;
 	}
 
 	/**
