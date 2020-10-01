@@ -66,6 +66,7 @@ final class Job_Salary {
 	private  function init() {
 		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_field' ) );
 		add_filter( 'job_manager_job_listing_data_fields', array( $this, 'admin_add_salary_field' ) );
+		add_action( 'single_job_listing_meta_end', array( $this, 'display_job_salary_data' ) );
 	}
 
 	/**
@@ -95,6 +96,20 @@ final class Job_Salary {
 			'description' => '',
 		);
 		return $fields;
+	}
+
+	/**
+	 * Display job salary data.
+	 * @return [type] [description]
+	 */
+	public function display_job_salary_data() {
+		global $post;
+
+		$salary = get_post_meta( $post->ID, '_job_salary', true );
+
+		if ( $salary ) {
+			echo '<li>' . __( 'Salary:' ) . ' $' . esc_html( $salary ) . '</li>';
+		}
 	}
 
 	/**
