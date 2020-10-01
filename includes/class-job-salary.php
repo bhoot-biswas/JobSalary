@@ -67,6 +67,7 @@ final class Job_Salary {
 		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_field' ) );
 		add_filter( 'job_manager_job_listing_data_fields', array( $this, 'admin_add_salary_field' ) );
 		add_action( 'single_job_listing_meta_end', array( $this, 'display_job_salary_data' ) );
+		add_filter( 'wpjm_get_job_listing_structured_data', array( $this, 'add_basesalary_data' ) );
 	}
 
 	/**
@@ -110,6 +111,24 @@ final class Job_Salary {
 		if ( $salary ) {
 			echo '<li>' . __( 'Salary:' ) . ' $' . esc_html( $salary ) . '</li>';
 		}
+	}
+
+	/**
+	 * Add Google structured data.
+	 * @param [type] $data [description]
+	 */
+	public function add_basesalary_data( $data ) {
+		global $post;
+
+		$data['baseSalary']                      = array();
+		$data['baseSalary']['@type']             = 'MonetaryAmount';
+		$data['baseSalary']['currency']          = 'USD';
+		$data['baseSalary']['value']             = array();
+		$data['baseSalary']['value']['@type']    = 'QuantitativeValue';
+		$data['baseSalary']['value']['value']    = get_post_meta( $post->ID, '_job_salary', true );
+		$data['baseSalary']['value']['unitText'] = 'YEAR';
+
+		return $data;
 	}
 
 	/**
