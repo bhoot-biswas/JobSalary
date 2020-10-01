@@ -64,14 +64,14 @@ final class Job_Salary {
 	 * @return [type] [description]
 	 */
 	private  function init() {
-		add_filter( 'submit_job_form_fields', 'frontend_add_salary_field' );
+		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_field' ) );
 	}
 
 	/**
 	 * Add salary field.
 	 * @param [type] $fields [description]
 	 */
-	private function frontend_add_salary_field( $fields ) {
+	public function frontend_add_salary_field( $fields ) {
 		$fields['job']['job_salary'] = array(
 			'label'       => __( 'Salary ($)', 'job-salary' ),
 			'type'        => 'text',

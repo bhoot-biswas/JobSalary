@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     Job Salary
+ * Plugin Name:     Job Salary for for WP Job Manager
  * Plugin URI:      PLUGIN SITE HERE
  * Description:     PLUGIN DESCRIPTION HERE
  * Author:          YOUR NAME HERE
@@ -14,9 +14,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Define JOB_SALARY_SEARCH_PLUGIN_FILE.
-if ( ! defined( 'JOB_SALARY_SEARCH_PLUGIN_FILE' ) ) {
-	define( 'JOB_SALARY_SEARCH_PLUGIN_FILE', __FILE__ );
+// Define JOB_SALARY_PLUGIN_FILE.
+if ( ! defined( 'JOB_SALARY_PLUGIN_FILE' ) ) {
+	define( 'JOB_SALARY_PLUGIN_FILE', __FILE__ );
 }
 
 // Include the main Custom_Job_Search class.
