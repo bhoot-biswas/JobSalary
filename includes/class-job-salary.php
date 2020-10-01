@@ -68,6 +68,7 @@ final class Job_Salary {
 		add_filter( 'job_manager_job_listing_data_fields', array( $this, 'admin_add_salary_field' ) );
 		add_action( 'single_job_listing_meta_end', array( $this, 'display_job_salary_data' ) );
 		add_filter( 'wpjm_get_job_listing_structured_data', array( $this, 'add_basesalary_data' ) );
+		add_action( 'job_manager_job_filters_search_jobs_end', array( $this, 'filter_by_salary_field' ) );
 	}
 
 	/**
@@ -129,6 +130,25 @@ final class Job_Salary {
 		$data['baseSalary']['value']['unitText'] = 'YEAR';
 
 		return $data;
+	}
+
+	/**
+	 * This can either be done with a filter (below) or the field can be added directly to the job-filters.php template file!
+	 * @return [type] [description]
+	 */
+	public function filter_by_salary_field() {
+		?>
+		<div class="search_salary">
+			<label for="search_salary"><?php _e( 'Salary', 'job-salary' ); ?></label>
+			<select name="filter_by_salary" class="job-manager-filter">
+				<option value=""><?php _e( 'Any Salary', 'job-salary' ); ?></option>
+				<option value="upto20"><?php _e( 'Up to $20,000', 'job-salary' ); ?></option>
+				<option value="20000-40000"><?php _e( '$20,000 to $40,000', 'job-salary' ); ?></option>
+				<option value="40000-60000"><?php _e( '$40,000 to $60,000', 'job-salary' ); ?></option>
+				<option value="over60"><?php _e( '$60,000+', 'job-salary' ); ?></option>
+			</select>
+		</div>
+		<?php
 	}
 
 	/**
