@@ -69,6 +69,7 @@ final class Job_Salary {
 		add_action( 'single_job_listing_meta_end', array( $this, 'display_job_salary_data' ) );
 		add_filter( 'wpjm_get_job_listing_structured_data', array( $this, 'add_basesalary_data' ) );
 		add_action( 'job_manager_job_filters_search_jobs_end', array( $this, 'filter_by_salary_field' ) );
+		add_filter( 'job_manager_get_listings', array( $this, 'filter_by_salary_field_query_args' ), 10, 2 );
 	}
 
 	/**
@@ -149,6 +150,53 @@ final class Job_Salary {
 			</select>
 		</div>
 		<?php
+	}
+
+	/**
+	 * This code gets your posted field and modifies the job search query
+	 * @param  [type] $query_args [description]
+	 * @param  [type] $args       [description]
+	 * @return [type]             [description]
+	 */
+	public function filter_by_salary_field_query_args( $query_args, $args ) {
+		if ( isset( $_POST['form_data'] ) ) {
+			parse_str( $_POST['form_data'], $form_data );
+
+			// If this is set, we are filtering by salary
+			if ( ! empty( $form_data['filter_by_salary'] ) ) {
+				$selected_range = sanitize_text_field( $form_data['filter_by_salary'] );
+				switch ( $selected_range ) {
+					case 'upto20':
+						$query_args['meta_query'][] = array(
+							'key'     => '_job_salary',
+							'value'   => '20000',
+							'compare' => '<',
+							'type'    => 'NUMERIC',
+						);
+						break;
+					case 'over60':
+						$query_args['meta_query'][] = array(
+							'key'     => '_job_salary',
+							'value'   => '60000',
+							'compare' => '>=',
+							'type'    => 'NUMERIC',
+						);
+						break;
+					default:
+						$query_args['meta_query'][] = array(
+							'key'     => '_job_salary',
+							'value'   => array_map( 'absint', explode( '-', $selected_range ) ),
+							'compare' => 'BETWEEN',
+							'type'    => 'NUMERIC',
+						);
+						break;
+				}
+
+				// This will show the 'reset' link
+				add_filter( 'job_manager_get_listings_custom_filter', '__return_true' );
+			}
+		}
+		return $query_args;
 	}
 
 	/**
