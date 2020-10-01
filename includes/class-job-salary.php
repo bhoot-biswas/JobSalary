@@ -40,6 +40,7 @@ final class Job_Salary {
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
+		$this->init();
 	}
 
 	/**
@@ -56,6 +57,29 @@ final class Job_Salary {
 	 */
 	private function includes() {
 		include_once JOB_SALARY_ABSPATH . 'includes/util.php';
+	}
+
+	/**
+	 * Init hooks.
+	 * @return [type] [description]
+	 */
+	private  function init() {
+		add_filter( 'submit_job_form_fields', 'frontend_add_salary_field' );
+	}
+
+	/**
+	 * Add salary field.
+	 * @param [type] $fields [description]
+	 */
+	private function frontend_add_salary_field( $fields ) {
+		$fields['job']['job_salary'] = array(
+			'label'       => __( 'Salary ($)', 'job-salary' ),
+			'type'        => 'text',
+			'required'    => true,
+			'placeholder' => 'e.g. 20000',
+			'priority'    => 7,
+		);
+		return $fields;
 	}
 
 	/**
