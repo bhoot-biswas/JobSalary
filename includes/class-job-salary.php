@@ -64,7 +64,7 @@ final class Job_Salary {
 	 * @return [type] [description]
 	 */
 	private  function init() {
-		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_field' ) );
+		add_filter( 'submit_job_form_fields', array( $this, 'frontend_add_salary_fields' ) );
 		add_filter( 'job_manager_job_listing_data_fields', array( $this, 'admin_add_salary_field' ) );
 		add_action( 'single_job_listing_meta_end', array( $this, 'display_job_salary_data' ) );
 		add_filter( 'wpjm_get_job_listing_structured_data', array( $this, 'add_basesalary_data' ) );
@@ -75,16 +75,32 @@ final class Job_Salary {
 	}
 
 	/**
-	 * Add frontend salary field.
+	 * Add frontend salary fields.
 	 * @param [type] $fields [description]
 	 */
-	public function frontend_add_salary_field( $fields ) {
-		$fields['job']['job_salary'] = array(
-			'label'       => __( 'Salary ($)', 'job-salary' ),
+	public function frontend_add_salary_fields( $fields ) {
+		$fields['job']['job_salary_pay_scale'] = array(
+			'label'    => __( 'Salary Pay Scale', 'job-salary' ),
+			'type'     => 'select',
+			'required' => false,
+			'priority' => 8,
+			'options'  => $this->get_salary_pay_scales(),
+		);
+
+		$fields['job']['job_salary_minimum'] = array(
+			'label'       => __( 'Salary Minimum ($)', 'job-salary' ),
 			'type'        => 'text',
-			'required'    => true,
+			'required'    => false,
+			'placeholder' => 'e.g. 10000',
+			'priority'    => 9,
+		);
+
+		$fields['job']['job_salary_maximum'] = array(
+			'label'       => __( 'Salary Maximum ($)', 'job-salary' ),
+			'type'        => 'text',
+			'required'    => false,
 			'placeholder' => 'e.g. 20000',
-			'priority'    => 7,
+			'priority'    => 10,
 		);
 		return $fields;
 	}
@@ -94,10 +110,22 @@ final class Job_Salary {
 	 * @param [type] $fields [description]
 	 */
 	public function admin_add_salary_field( $fields ) {
-		$fields['_job_salary'] = array(
-			'label'       => __( 'Salary ($)', 'job-salary' ),
+		$fields['_job_salary_pay_scale'] = array(
+			'label'       => __( 'Salary Pay Scale', 'job-salary' ),
+			'type'        => 'select',
+			'description' => '',
+			'options'     => $this->get_salary_pay_scales(),
+		);
+		$fields['_job_salary_minimum']   = array(
+			'label'       => __( 'Salary Minimum ($)', 'job-salary' ),
 			'type'        => 'text',
-			'placeholder' => 'e.g. 20000',
+			'placeholder' => 'e.g. 10000',
+			'description' => '',
+		);
+		$fields['_job_salary_maximum']   = array(
+			'label'       => __( 'Salary Maximum ($)', 'job-salary' ),
+			'type'        => 'text',
+			'placeholder' => 'e.g. 10000',
 			'description' => '',
 		);
 		return $fields;
@@ -232,6 +260,22 @@ final class Job_Salary {
 		}
 
 		return $column;
+	}
+
+	/**
+	 * [public description]
+	 * @var [type]
+	 */
+	public function get_salary_pay_scales() {
+		$job_salary_pay_scale_options = array(
+			'' => __( 'Please select an option', 'job-salary' ),
+		);
+
+		for ( $i = 1; $i <= 20; $i++ ) {
+			$job_salary_pay_scale_options[ $i ] = \sprintf( __( 'Grade %d', 'job-salary' ), $i );
+		}
+
+		return $job_salary_pay_scale_options;
 	}
 
 	/**
