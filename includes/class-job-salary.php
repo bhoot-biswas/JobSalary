@@ -267,12 +267,17 @@ final class Job_Salary {
 	 * @var [type]
 	 */
 	public function get_salary_pay_scale_options() {
+		$job_salary_pay_scales        = $this->get_salary_pay_scales();
 		$job_salary_pay_scale_options = array(
 			'' => __( 'Please select an option', 'job-salary' ),
 		);
 
 		for ( $i = 1; $i <= 20; $i++ ) {
-			$job_salary_pay_scale_options[ $i ] = \sprintf( __( 'Grade %d', 'job-salary' ), $i );
+			if ( isset( $job_salary_pay_scales[ $i ][1] ) ) {
+				$job_salary_pay_scale_options[ $i ] = \sprintf( __( 'Grade %1$d (%2$d - %3$d)', 'job-salary' ), $i, $job_salary_pay_scales[ $i ][0], $job_salary_pay_scales[ $i ][1] );
+			} else {
+				$job_salary_pay_scale_options[ $i ] = \sprintf( __( 'Grade %1$d (%2$d)', 'job-salary' ), $i, $job_salary_pay_scales[ $i ][0] );
+			}
 		}
 
 		return $job_salary_pay_scale_options;
