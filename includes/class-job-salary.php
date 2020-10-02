@@ -84,7 +84,7 @@ final class Job_Salary {
 			'type'     => 'select',
 			'required' => false,
 			'priority' => 8,
-			'options'  => $this->get_salary_pay_scales(),
+			'options'  => $this->get_salary_pay_scale_options(),
 		);
 
 		$fields['job']['job_salary_minimum'] = array(
@@ -114,7 +114,7 @@ final class Job_Salary {
 			'label'       => __( 'Salary Pay Scale', 'job-salary' ),
 			'type'        => 'select',
 			'description' => '',
-			'options'     => $this->get_salary_pay_scales(),
+			'options'     => $this->get_salary_pay_scale_options(),
 		);
 		$fields['_job_salary_minimum']   = array(
 			'label'       => __( 'Salary Minimum ($)', 'job-salary' ),
@@ -263,10 +263,10 @@ final class Job_Salary {
 	}
 
 	/**
-	 * [public description]
+	 * Get salary pay scale options.
 	 * @var [type]
 	 */
-	public function get_salary_pay_scales() {
+	public function get_salary_pay_scale_options() {
 		$job_salary_pay_scale_options = array(
 			'' => __( 'Please select an option', 'job-salary' ),
 		);
@@ -276,6 +276,36 @@ final class Job_Salary {
 		}
 
 		return $job_salary_pay_scale_options;
+	}
+
+	/**
+	 * [get_salary_pay_scales description]
+	 * @return [type] [description]
+	 */
+	public function get_salary_pay_scales() {
+		return array(
+			array(),
+			array( 78000 ),
+			array( 66000, 76490 ),
+			array( 56500, 74400 ),
+			array( 50000, 71200 ),
+			array( 43000, 69850 ),
+			array( 35500, 67010 ),
+			array( 29000, 63410 ),
+			array( 23000, 55460 ),
+			array( 22000, 53060 ),
+			array( 16000, 38640 ),
+			array( 12500, 32240 ),
+			array( 11300, 27300 ),
+			array( 11000, 26590 ),
+			array( 10200, 24680 ),
+			array( 9700, 23490 ),
+			array( 9300, 22490 ),
+			array( 9000, 21800 ),
+			array( 8800, 21310 ),
+			array( 8500, 20570 ),
+			array( 8250, 20010 ),
+		);
 	}
 
 	/**
