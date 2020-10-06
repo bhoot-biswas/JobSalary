@@ -63,7 +63,7 @@ final class Job_Salary {
 		add_filter( 'job_manager_get_listings', array( $this, 'filter_by_salary_field_query_args' ), 10, 2 );
 		add_filter( 'manage_edit-job_listing_columns', array( $this, 'retrieve_salary_column' ) );
 		add_filter( 'manage_job_listing_posts_custom_column', array( $this, 'display_salary_column' ) );
-		add_filter( 'job_manager_locate_template', 'locate_salary_template', 10, 3 );
+		add_filter( 'job_manager_locate_template', [ $this, 'locate_salary_template' ], 10, 2 );
 	}
 
 	/**
@@ -311,7 +311,7 @@ final class Job_Salary {
 	 * @param  [type] $template_name [description]
 	 * @return [type]                [description]
 	 */
-	public function locate_salary_template( $template, $template_name, $template_path ) {
+	public function locate_salary_template( $template, $template_name ) {
 		if ( file_exists( trailingslashit( JOB_SALARY_PLUGIN_DIR . '/templates/' ) . $template_name ) ) {
 			return trailingslashit( JOB_SALARY_PLUGIN_DIR . '/templates/' ) . $template_name;
 		}
