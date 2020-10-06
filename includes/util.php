@@ -5,6 +5,6 @@
  * @package Job_Salary
  */
 
-namespace BengalStudio\Job_Salary;
+namespace BengalStudio;
 
 defined( 'ABSPATH' ) || exit;
