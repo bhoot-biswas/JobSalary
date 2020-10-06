@@ -12,12 +12,15 @@
  * @package         Job_Salary
  */
 
-defined( 'ABSPATH' ) || exit;
-
-// Define JOB_SALARY_PLUGIN_FILE.
-if ( ! defined( 'JOB_SALARY_PLUGIN_FILE' ) ) {
-	define( 'JOB_SALARY_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-// Include the main Job_Salary class.
-include_once dirname( __FILE__ ) . '/includes/class-job-salary.php';
+// Define constants.
+define( 'JOB_SALARY_VERSION', '1.34.3' );
+define( 'JOB_SALARY_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( 'JOB_SALARY_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
+define( 'JOB_SALARY_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
+// Require the main Job_Salary class.
+require_once dirname( __FILE__ ) . '/includes/class-job-salary.php';
