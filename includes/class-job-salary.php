@@ -94,6 +94,21 @@ final class Job_Salary {
 			'placeholder' => 'e.g. 20000',
 			'priority'    => 10,
 		);
+
+		$fields['job']['job_salary_type'] = array(
+			'label'    => __( 'Salary Type', 'job-salary' ),
+			'type'     => 'select',
+			'required' => false,
+			'priority' => 11,
+			'default'  => 'MONTHLY',
+			'options'  => [
+				'YEARLY'  => __( 'Per Year', 'job-salary' ),
+				'MONTHLY' => __( 'Per Month', 'job-salary' ),
+				'WEEKLY'  => __( 'Per Week', 'job-salary' ),
+				'DAILY'   => __( 'Per Day', 'job-salary' ),
+				'HOURLY'  => __( 'Per Hour', 'job-salary' ),
+			],
+		);
 		return $fields;
 	}
 
@@ -102,23 +117,25 @@ final class Job_Salary {
 	 * @param [type] $fields [description]
 	 */
 	public function admin_add_salary_field( $fields ) {
-		$fields['_job_salary_pay_scale'] = array(
-			'label'       => __( 'Salary Pay Scale', 'job-salary' ),
-			'type'        => 'select',
-			'description' => '',
-			'options'     => $this->get_salary_pay_scale_options(),
-		);
-		$fields['_job_salary_minimum']   = array(
+		$fields['_job_salary_minimum'] = array(
 			'label'       => __( 'Salary Minimum ($)', 'job-salary' ),
 			'type'        => 'text',
 			'placeholder' => 'e.g. 10000',
 			'description' => '',
 		);
-		$fields['_job_salary_maximum']   = array(
+
+		$fields['_job_salary_maximum'] = array(
 			'label'       => __( 'Salary Maximum ($)', 'job-salary' ),
 			'type'        => 'text',
 			'placeholder' => 'e.g. 10000',
 			'description' => '',
+		);
+
+		$fields['_job_salary_pay_scale'] = array(
+			'label'       => __( 'Salary Pay Scale', 'job-salary' ),
+			'type'        => 'select',
+			'description' => '',
+			'options'     => $this->get_salary_pay_scale_options(),
 		);
 		return $fields;
 	}
